@@ -1,38 +1,48 @@
-<html>
-  <head>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% extends "base.html" %}
+{% block contents %}
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h1>Register</h1>
+  </div>
+</div>
+<div class="row mb-5">
+  <div class="col-12">
+    {{ error }}
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+      <form method="POST" action=".">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="username">USER NAME</label>
+          <input type="text"
+            class="form-control"
+            id="username"
+            placeholder="Enter Username"
+            name = "username">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <div class="container">
-        <div class="row mt-5">
-          <div class="col-12 text-center">
-            <h1>Register</h1>
-          </div>
         </div>
-        <div class="row mt-5">
-          <div class="col-12">
-              <form>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
-          </div>
+        <div class="form-group">
+          <label for="useremail">USER EMAIL</label>
+          <input type="email"
+            class="form-control"
+            id="useremail"
+            placeholder="Enter User Email"
+            name = "useremail">
+
         </div>
-    </div>
-  </body>
-</html>
+        <div class="form-group">
+          <label for="password">PASSWORD</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter Password" name = "password">
+        </div>
+        <div class="form-group">
+          <label for="re-password">CHECK PASSWORD</label>
+          <input type="password" class="form-control" id="re-password" placeholder="Enter Password" name="re-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">SUBMIT</button>
+      </form>
+  </div>
+</div>
+{% endblock %}
