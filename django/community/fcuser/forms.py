@@ -25,11 +25,11 @@ class LoginForm(forms.Form):
         if username and password:
             try:
                 fcuser = Fcuser.objects.get(username=username)
-                if not check_password(password, fcuser.password):
-                    # 특정 필드에 에러를 넣는 함수
-                    self.add_error('password', "Wrong Password")
-                else:
-                    self.user_id = fcuser.id
-
-            except:
+            except Fcuser.DoesNotExist:
                 self.add_error('username', "No USERNAME IN DB")
+                return
+            if not check_password(password, fcuser.password):
+                # 특정 필드에 에러를 넣는 함수
+                self.add_error('password', "Wrong Password")
+            else:
+                self.user_id = fcuser.id

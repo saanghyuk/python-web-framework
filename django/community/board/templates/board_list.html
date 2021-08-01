@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12">
+      <table class="table table-light">
+        <thead class="thead-light">
+          <tr>
+            <th>#</th>
+            <th>TITLE</th>
+            <th>ID</th>
+            <th>DATE</th>
+          </tr>
+        </thead>
+        {% for board in boards %}
+        <tbody>
+          <th>{{ board.id }}</th>
+          <td>{{ board.title }}</td>
+          <td>{{ board.writer }}</td>
+          <td>{{ board.registered_dttm }}</td>
+        </tbody>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="row mt-2">
+      <div class="col-12">
+        <nav>
+          <ul class="pagination justify-content-center">
+
+
+              {% if boards.has_previous %}
+              <li class="page-item">
+              <a href="?p={{ boards.previous_page_number }}" class="page-link">Before</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+              <a href="#" class="page-link ">Before</a>
+              </li>
+              {% endif %}
+
+
+            <li class="page-item active">
+              <a href="" class="page-link">{{ boards.number }} / {{ boards.paginator.num_pages }}</a>
+            </li>
+
+
+              {% if boards.has_next %}
+              <li class="page-item">
+              <a href="?p={{ boards.next_page_number }}" class="page-link">After</a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+              <a href="#" class="page-link disabled">After</a>
+              </li>
+              {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <a href="/board/write">
+        <button class="btn btn-primary" >
+          글쓰기
+        </button>
+      </a>
+      </div>
+    </div>
+</div>
+{% endblock %}
