@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+
+{% block contents %}
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h1>Home Page</h1>
+  </div>
+</div>
+<div class="row mb-5">
+  {% if request.session.user %}
+  <div class="row mt-5">
+    <div class="col-12">
+      <button class="btn btn-primary btn-block" onclick="location.href ='/board/list/'">Conetents</button>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      <button class="btn btn-primary btn-block" onclick="location.href ='/fcuser/logout/'">Log Out</button>
+    </div>
+  </div>
+
+  {% else %}
+  <div class="col-6">
+    <button class="btn btn-primary btn-block" onclick="location.href ='/fcuser/login/'">Log In</button>
+  </div>
+      <div class="col-6">
+        <button class="btn btn-primary btn-block" onclick="location.href ='/fcuser/register/'">Register</button>
+      </div>
+    </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      <button class="btn btn-primary btn-block" onclick="location.href ='/board/list/'">Conetents</button>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}
+
+
+
+
+

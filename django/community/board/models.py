@@ -6,8 +6,11 @@ from django.db import models
 class Board(models.Model):
     title = models.CharField(max_length=128, verbose_name='title')
     contents = models.TextField(verbose_name="contents")
+    # 1:N Relation
     writer = models.ForeignKey(
         'fcuser.Fcuser', on_delete=models.CASCADE, verbose_name='writer')
+
+    tags = models.ManyToManyField('tag.Tag', verbose_name='#Tag')
     registered_dttm = models.DateTimeField(
         auto_now_add=True, verbose_name='Registered Time')
 

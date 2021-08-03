@@ -10,3 +10,6 @@ class BoardForm(forms.Form):
     contents = forms.CharField(error_messages={
         "required": "Enter the contents please"
     }, widget=forms.Textarea, label="Contents")
+    tags = forms.CharField(
+        required=False, label="Tags Form"
+    )
