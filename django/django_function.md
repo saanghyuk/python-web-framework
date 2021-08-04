@@ -2,7 +2,7 @@
 
 
 
-
+[Class View](###ClassView)
 
 
 
@@ -47,9 +47,48 @@
 
 
 
-- 
+- ### ClassView
+
+  장고 안에 기본적으로 만들어져있는 뷰들이 있다. 
+
+  [Class View Options](https://docs.djangoproject.com/en/3.2/topics/class-based-views/)
+
+  어떻게 보여줄지만, html코드로 작성하면 된다. 
+
+  
 
 
 
+- ### Humanize
 
+  [django template builtin filter](https://docs.djangoproject.com/en/3.2/ref/templates/builtins/)
+
+  html템플릿에서 여러 필터 사용할 수 있게 해줌. 예를 들어, 가격 3자리마다, 를 찍던가 날짜 형식을 바꾸던가. 
+
+  Settings에 등록하고 상단에 Load해야 사용 가능. 
+
+  *settings.py*
+
+  ```python
+  
+  INSTALLED_APPS = [
+  		...
+      'django.contrib.humanize',
+      ...
+  ]
+  
+  ```
+
+  HTML상단에 
+
+  `{% load humanize %}`
+
+  예시: 
+
+  ```python
+  <th scope="row">{{ product.price|intcomma }} Won</th>
+  <th scope="row">{{ product.register_date|date:'Y-m-d H:i' }}</th>
+  ```
+
+  
 

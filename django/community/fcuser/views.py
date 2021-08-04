@@ -7,7 +7,6 @@ from .forms import LoginForm
 
 
 def home(request):
-
     return render(request, 'home.html')
 
 
