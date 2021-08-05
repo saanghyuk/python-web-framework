@@ -90,5 +90,95 @@
   <th scope="row">{{ product.register_date|date:'Y-m-d H:i' }}</th>
   ```
 
+  ```python
+  # 사진 같은거 나오게 해줌. 
+  <li class="list-group-item">Description : {{ product.description|safe }}</li>
+  ```
+
   
 
+
+
+
+
+- Class 기반의 뷰에서 폼을 같이 넘길 때, 
+
+  ```python
+  class ProductDetail(DetailView):
+    template_name = 'product_detail.html'
+    queryset = Product.objects.all()
+    context_object_name = 'product'
+  
+    # 원하는 정보 같이 넣어서 전달하게 해주는 함수 제공.
+    def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['form'] = OrderForm
+      return context
+  ```
+
+  
+
+- Form의 clean에서 여러가지 모델에 관한 처리 하는데, 이때 request.session을 못쓰는게 항상 문제임. 
+
+  **form에다가 리퀘스트를 같이 싣어 주는 코드.** 
+
+  지금 구조가, product_detail이라는 Html을 Product에 있는 view에서 만들면서, 그 안에 들어가는 폼뷰를 같이 쏴주는 형태. `get_context_data` 이걸로. 
+
+  일단 form 자체에서 __init__할때 리퀘스트 받아서 스스로 인스턴스에 저장할 수 있도록 생성자 함수 수정해주고, 
+
+  ```python
+  forms.py
+  # 생성자 수정해서, 폼이 만들어 지면서, request인자 받으면서 생성되도록 
+  
+  class OrderForm(forms.Form):
+      def __init__(self, request, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request
+  
+      quantity = forms.IntegerField(error_messages={
+          'required': "Please Select the Quantity"
+      }, label="quantity")
+  
+      product = forms.IntegerField(
+        label = "product", widget  = forms.HiddenInput
+      )
+  ```
+
+  그리고, 이 폼 만들어 주는 곳에서 Init을 하기로 했으면, 실제로 만드는 곳에서 이걸 넣어 줘야지. 
+
+  ```Python
+  # 폼이 만들어 지면서, 리퀘스트 정보를 넣어서 그 채로 템플릿으로 보내준다. 
+  
+  class ProductDetail(DetailView):
+    template_name = 'product_detail.html'
+    queryset = Product.objects.all()
+    context_object_name = 'product'
+  
+    # 원하는 정보 같이 넣어서 전달하게 해주는 함수 제공.
+    def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['form'] = OrderForm(self.request)
+      return context
+  ```
+
+  근데 지금 이 폼의 POST는 또, /order/create가 라는 다른 url에서 받고 있는데, 
+
+  얘는 order앱의 view에서 정의되 있음 여기서도, 수정 해야함. 거기까지도 수정해 줘야 함. 
+
+  ```python
+  # 받는 쪽에서도, 받은 다음에 다시 form으로 보내서 거기서 검증을 하는데, 
+  # 그때 다시 form이 받을 수 있도록, kw에 싣어서 보내주는 것. 
+  
+  class OrderCreate(FormView):
+      form_class = OrderForm
+      success_url = '/product/'
+  
+      def get_form_kwargs(self, **kwargs):
+        kw = super().get_form_kwargs(**kwargs)
+        kw.update({
+          'request' : self.request
+        })
+        return kw
+  ```
+
+  

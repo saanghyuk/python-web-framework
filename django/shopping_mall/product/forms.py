@@ -1,6 +1,8 @@
 from django import forms
 from .models import Product
 
+
+
 class RegisterForm(forms.Form):
 
     name = forms.CharField(error_messages={

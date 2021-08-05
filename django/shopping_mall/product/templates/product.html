@@ -17,10 +17,12 @@
       <tbody class="text-dark">
         {% for product in product_list %}
         <tr>
+
           <th scope="row">{{ product.id }}</th>
-          <th scope="row">{{ product.name }}</th>
+          <th scope="row"><a href="/product/{{product.id}}/">{{ product.name }}</a></th>
           <th scope="row">{{ product.price|intcomma }} Won</th>
           <th scope="row">{{ product.register_date|date:'Y-m-d H:i' }}</th>
+
         </tr>
         {% endfor %}
       </tbody>
