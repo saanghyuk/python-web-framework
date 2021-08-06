@@ -24,7 +24,6 @@
                   </div>
 
                   {% if sanghyuk %}
-                  <div>hiiiiiiiiiiiiiiii</div>
                   <span style="color : red">{{ field.errors }}</span>
                   {% endif %}
                   {% endfor %}
@@ -34,6 +33,7 @@
 
                 <li class="list-group-item">ID : {{ product.id }}</li>
                 <li class="list-group-item">Price : {{ product.price|intcomma }} Won</li>
+                <li class="list-group-item">Stock : {{ product.stock|intcomma }}</li>
                 <li class="list-group-item">Registered Date : {{ product.register_date|date:'Y-m-d H:i' }}</li>
                 <li class="list-group-item">Description : {{ product.description|safe }}</li>
             </ul>

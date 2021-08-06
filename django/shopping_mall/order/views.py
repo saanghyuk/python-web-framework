@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from .forms import OrderForm
-
+from django.views.generic import ListView
+from .models import Order
+from user.models import User
+from django.utils.decorators import method_decorator
+from user.decorator import login_required
 
 # Create your views here.
-
+@method_decorator(login_required, name='dispatch')
 class OrderCreate(FormView):
     form_class = OrderForm
     success_url = '/product/'
@@ -12,23 +16,20 @@ class OrderCreate(FormView):
     def form_invalid(self, form):
         return redirect('/product/'+str(form.product))
 
-        # return redirect(self.request, 'product_detail.html', {"form":form})
-
     def get_form_kwargs(self, **kwargs):
       kw = super().get_form_kwargs(**kwargs)
-
       kw.update({
         'request' : self.request
       })
       return kw
 
+@method_decorator(login_required, name='dispatch')
+class OrderList(ListView):
+    # model = Order
+    template_name = 'order.html'
+    context_object_name = 'order_list'
 
+    def get_queryset(self, **kwargs):
+        queryset = Order.objects.filter(user__email=self.request.session.get('user'))
+        return queryset
 
-    # # 유효성 검사 끝나고 실행되는 함수
-    # def form_valid(self, form):
-    #     # forms에서 성공시 싣어 보내 줬음.
-    #     print(form.product)
-    #     print(form.quantity)
-    #     print(self.request.session['user'])
-    #     # self.request.session['user'] = form.email
-    #     return super().form_valid(form)fjfkdkkd

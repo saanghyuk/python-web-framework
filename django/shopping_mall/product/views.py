@@ -3,8 +3,11 @@ from django.views.generic import ListView, FormView, DetailView
 from .models import Product
 from .forms import RegisterForm
 from order.forms import OrderForm
+from django.utils.decorators import method_decorator
+from user.decorator import login_required, admin_required
 # Create your views here.
 
+@method_decorator(admin_required, name='dispatch')
 class ProductCreate(FormView):
     template_name = 'register_product.html'
     form_class = RegisterForm
