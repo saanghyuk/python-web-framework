@@ -30,11 +30,7 @@ class RegisterForm(forms.Form):
                     user = User.objects.get(email=email)
                     self.add_error('email', "Email Already Registered")
                 except User.DoesNotExist:
-                    user = User(
-                        email=email,
-                        password=make_password(password)
-                    )
-                    user.save()
+
                     return
 
 

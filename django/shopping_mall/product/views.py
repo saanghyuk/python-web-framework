@@ -5,14 +5,26 @@ from .forms import RegisterForm
 from order.forms import OrderForm
 from django.utils.decorators import method_decorator
 from user.decorator import login_required, admin_required
+from .models import Product
 # Create your views here.
 
+
+@method_decorator(login_required, name='dispatch')
 @method_decorator(admin_required, name='dispatch')
 class ProductCreate(FormView):
     template_name = 'register_product.html'
     form_class = RegisterForm
     success_url = '/product/'
 
+    def form_valid(self, form):
+      product = Product(
+              name=form.data.get('name'),
+              price=form.data.get('price'),
+              description=form.data.get('description'),
+              stock=form.data.get('stock'),
+            )
+      product.save()
+      return super().form_valid(form)
 
 class ProductList(ListView):
   model = Product

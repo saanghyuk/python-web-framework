@@ -1,8 +1,7 @@
 from django import forms
-from .models import Order
 from product.models import Product
 from user.models import User
-from django.db import transaction
+
 
 class OrderForm(forms.Form):
     def __init__(self, request, *args, **kwargs):
@@ -26,18 +25,7 @@ class OrderForm(forms.Form):
 
         user = self.request.session.get('user')
 
-        if quantity and user and product:
-            with transaction.atomic():
-                prod = Product.objects.get(pk=product)
-                order = Order(
-                quantity=quantity,
-                product =prod,
-                user = User.objects.get(email=user)
-                )
-                order.save()
-                prod.stock -= quantity
-                prod.save()
-        else:
-            self.product = product
+        if not (quantity and user and product):
+            # self.product = product
             self.add_error('quantity', "No Values")
             self.add_error('product', "No Values")
