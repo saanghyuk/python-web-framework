@@ -262,3 +262,64 @@ def admin_required(function):
   return wrap
 ```
 
+
+
+
+
+
+
+- 지금까지는 벡엔드와 프론트엔드가 공존했음. 
+
+  프론트, 백에서 서로 응답하면서 html을 반응함. html로 반응함. 
+
+  ![2_2](./materials/2_3.png)
+
+  ![2_2](./materials/2_4.png)
+
+  ​	![2_2](./materials/2_5.png)
+
+  ​	![2_2](./materials/2_6.png)				
+
+- #### Django Rest Framework
+
+  [rest api에 대한 설명 필독](https://docs.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)
+
+  [Django Rest API docs](https://www.django-rest-framework.org/)
+
+  RestAPI의 Url은 명사 위주로 해야 한다. 
+
+  ![2_2](./materials/2_7.png)
+
+  
+
+  ![2_2](./materials/2_8.png)
+
+  ![2_2](./materials/2_9.png)
+
+  ![2_2](./materials/2_10.png)
+
+- *pip install djangrestframework*
+
+  이후 Settings에서 등록해야 사용 가능. 
+
+  ```python
+  INSTALLED_APPS = [
+      'django.contrib.admin',
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.staticfiles',
+      'django.contrib.humanize',
+      'rest_framework',
+      'order',
+      'product',
+      'user'
+  ]
+  ```
+
+  
+
+- Serializer와 Mixin에 대한 설명 
+
+  [Serializer 정리](https://velog.io/@phyyou/DRF-%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0-7-GenericAPIView%EC%99%80-Mixins)

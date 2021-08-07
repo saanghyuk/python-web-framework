@@ -5,8 +5,27 @@ from .forms import RegisterForm
 from order.forms import OrderForm
 from django.utils.decorators import method_decorator
 from user.decorator import login_required, admin_required
+from rest_framework import generics, mixins
 from .models import Product
+from .serializers import ProductSerializer
 # Create your views here.
+
+class ProductListAPI(generics.GenericAPIView, mixins.ListModelMixin):
+  serializer_class = ProductSerializer
+  def get_queryset(self):
+    return Product.objects.all().order_by('id')
+
+  def get(self, request, *args, **kwargs):
+    return self.list(request, *args, **kwargs)
+
+
+class ProductDetailAPI(generics.GenericAPIView, mixins.RetrieveModelMixin):
+  serializer_class = ProductSerializer
+  def get_queryset(self):
+    return Product.objects.all().order_by('id')
+  # RetrieveMixin은 자동으로 url의 pk가져옴.
+  def get(self, request, *args, **kwargs):
+    return self.retrieve(request, *args, **kwargs)
 
 
 @method_decorator(login_required, name='dispatch')
