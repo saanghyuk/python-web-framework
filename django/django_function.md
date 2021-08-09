@@ -323,3 +323,4 @@ def admin_required(function):
 - Serializer와 Mixin에 대한 설명 
 
   [Serializer 정리](https://velog.io/@phyyou/DRF-%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0-7-GenericAPIView%EC%99%80-Mixins)
+
