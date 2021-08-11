@@ -25,6 +25,9 @@ import django
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+```
 
-## deployed at Google Cloud Platform
+### deployed at Google Cloud Platform
+
 [Link to Project](http://34.126.149.21:8000/product/)
+
