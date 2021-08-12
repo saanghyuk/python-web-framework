@@ -1,1 +1,10 @@
 Hello World!
+
+
+
+{% if userid %}
+{{ userid }}
+<a href="/logout">LOG OUT</a>
+{% else %}
+<a href="/login">LOG IN</a>
+{% endif %}

@@ -56,3 +56,11 @@
 - #### JInja2
 
   Flask가 설치될때, 같이 설치됨. 내부에서 이미 사용중임. 
+
+
+
+- #### Static File 관리하기
+
+  CSS/JAVASCRIP 등
+
+  
