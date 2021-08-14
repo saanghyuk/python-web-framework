@@ -7,19 +7,18 @@ from flask import json, jsonify
 from models import User
 from flask import request
 from models import db
+from flask_jwt import jwt_required
 
 
 @api.route('/users', methods=["GET", "POST"])
+@jwt_required()
 def users():
     if request.method == "POST":
-        userid = request.form.get('userid')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        re_password = request.form.get('re-password')
-        print(userid)
-        print(username)
-        print(password)
-        print(re_password)
+        data = request.get_json()
+        userid = data.get('userid')
+        username = data.get('username')
+        password = data.get('password')
+        re_password = data.get('re-password')
         if not (userid and username and password and re_password):
             return jsonify({'error': 'No Arguments'}), 400
 

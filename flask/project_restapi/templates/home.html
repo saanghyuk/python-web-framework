@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    $(document).ready(function(){
+      if($.cookie('access_token')){
+          $(".logout-div").css('visibility', 'visible');
+      } else {
+          $(".logout-div").css('visibility', 'hidden');
+      }
+
+      $.ajax({
+        url: '/api/v1/users',
+        contentType: 'application/json',
+        method: "GET",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authorization', 'JWT '+$.cookie('access_token'))
+        }
+      }).done(function(res){
+        $('#content').text(res)
+      }).error(function(res){
+        window.location='/login'
+      })
+    })
+    function logout(){
+      $.removeCookie('access_token')
+      window.location='/login'
+    }
+  </script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <div class="row mt-5">
+      <h1>Main</h1>
+    </div>
+    <div class="logout-div">
+    <button class="btn btn-primary" onclick="logout()" >Log OUT</button>
+    </div>
+    <div class="row mt-5" id="content">
+    </div>
+  </div>
+</body>
+</html>

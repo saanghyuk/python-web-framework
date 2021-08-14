@@ -4,7 +4,6 @@
 
   ```python
   
-  
   if __name__ == "__main__":
       basedir = os.path.abspath(os.path.dirname(__file__))
       dbfile = os.path.join(basedir, 'db.sqlite')
@@ -70,7 +69,7 @@
 
   `source flask_env/bin/activate`
 
-  `pip install flask flask-wtf flask-sqlalchemy`
+  `pip install flask flask-wtf flask-sqlalchemy flask-jwt`
 
   exit누르고 나온다. 
 
@@ -103,3 +102,5 @@
   ![1_2](./source/1_9.png)
 
   **Reload** 누르고, 주소로 들어가면된다. 
+
+  
