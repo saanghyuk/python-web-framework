@@ -236,3 +236,13 @@
   이제 다시 아까 nic0로 가보면, Flask-test까지 들어와있는 것을 확인가능. 
 
   ![1_10](./source/1_19.png)
+
+
+
+
+
+- requirements에 패키지 dependency담아놓은 경우.
+
+  pip3 install < requirements.txt 
+
+  
