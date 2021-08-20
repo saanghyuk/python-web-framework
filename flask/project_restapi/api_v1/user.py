@@ -42,8 +42,10 @@ def users():
     )
 
 
+# @api.rout('/users/<uid>', methods=["GET", "POST", "DELETE"])
+
 @api.route('/users/<uid>', methods=['GET', 'PUT', 'DELETE'])
-def user_detail(uid):
+def user_detail(usid):
     if request.method == 'GET':
         user = User.query.filter(User.id == uid).first()
         return jsonify(user.serialize)
