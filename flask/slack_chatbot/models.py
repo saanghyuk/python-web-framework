@@ -14,6 +14,8 @@ class Todo(db.Model):
     def serialize(self):
         return {
             'id': self.id,
+            'user': self.user.userid,
+            # 아래서 입력한 Relationship 때문에 이렇게 입력이 가능한 것.
             'title': self.title,
             'tstamp': self.tstamp
         }

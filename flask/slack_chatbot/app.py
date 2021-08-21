@@ -4,7 +4,7 @@ import os
 from models import db
 from api_v1.__init__ import api as api_v1
 from forms import RegisterForm, LoginForm
-from models import User
+from models import User, Todo
 from flask import session
 
 app = Flask(__name__)
@@ -13,7 +13,12 @@ app.register_blueprint(api_v1, url_prefix='/api/v1')
 
 @app.route('/', methods=['GET'])
 def home():
-    userid = session.get('userid', None)
+    id = session.get('userid', None)
+    if id:
+        userid = User.query.filter_by(id=id).first().userid
+    else:
+        userid = None
+    todos = Todo.query.filter_by(user_id=id)
     return render_template('home.html', userid=userid)
 
 
@@ -23,8 +28,10 @@ def login():
     # POST까지 체크
     if form.validate_on_submit():
         userid = form.data.get('userid')
-        password = form.data.get('password')
-        session['userid'] = userid
+
+        # password = form.data.get('password')
+        session['userid'] = User.query.filter_by(userid=userid).first().id
+
         return redirect('/')
     return render_template('login.html', form=form)
 
