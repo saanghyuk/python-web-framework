@@ -14,12 +14,14 @@ app.register_blueprint(api_v1, url_prefix='/api/v1')
 @app.route('/', methods=['GET'])
 def home():
     id = session.get('userid', None)
+    todos = []
     if id:
         userid = User.query.filter_by(id=id).first().userid
+        todos = Todo.query.filter_by(user_id=id)
     else:
         userid = None
-    todos = Todo.query.filter_by(user_id=id)
-    return render_template('home.html', userid=userid)
+
+    return render_template('home.html', userid=userid, todos=todos)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -75,4 +77,4 @@ db.create_all()
 
 if __name__ == "__main__":
 
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

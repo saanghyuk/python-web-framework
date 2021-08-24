@@ -282,7 +282,7 @@
       wsgi는 app 안에 원래 들어있더라?(settings있던 곳)
 
       ```
-      uwsgi --http :8000 --home ~/shopping_mall/django_env --chdir ~/shopping_mall --module shopping_mall.wsgi
+      uwsgi --http :8000 --home ~/shopping_mall/django_env --chdir ~/shopping_mal --module shopping_mall.wsgi
       ```
 
       이제 하나 남았음. **백그라운드로 실행** 시켜 줘야함. 데몬. 
@@ -290,27 +290,26 @@
       맨 앞에 nohub랑 맨 뒤에 & 쓰면 이게 그냥 데몬이야. 
 
       ```python
-      nohub uwsgi --http :8000 --home ~/shopping_mall/dja
-      ngo_env --chdir ~/shopping_mall --module shopping_mall.wsgi &
+      nohub uwsgi --http :8000 --home ~/shopping_mall/django_env --chdir ~/shopping_mall --module shopping_mall.wsgi &
       ```
-
-      프로그래밍 실행될때 부여되는 고유 id가 생김. 
-
-      ![1_4](./materials/3_17.png)
-
-      어떻게 확인 되냐면, 
-
-      ```
+      
+프로그래밍 실행될때 부여되는 고유 id가 생김. 
+      
+![1_4](./materials/3_17.png)
+      
+어떻게 확인 되냐면, 
+      
+```
       ps -ef | grep 2673
       ```
-
-      ![1_4](./materials/3_18.png)
-
-      보이잖아. 
-
-      노헙은 실행되는 위치에 nohup.out이라는 파일을 만들고, 거기에 메세지들 보여 준다. 
-
-      ![1_4](./materials/3_19.png)
-
-      supervisor처럼, 꺼지면 다시 실행시켜주는 서버 같은 것도 많이 쓴다. 
+      
+![1_4](./materials/3_18.png)
+      
+보이잖아. 
+      
+노헙은 실행되는 위치에 nohup.out이라는 파일을 만들고, 거기에 메세지들 보여 준다. 
+      
+![1_4](./materials/3_19.png)
+      
+supervisor처럼, 꺼지면 다시 실행시켜주는 서버 같은 것도 많이 쓴다. 
 

@@ -8,6 +8,8 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(256))
+    status = db.Column(db.Integer)
+    due = db.Column(db.String(64))
     tstamp = db.Column(db.DateTime, server_default=db.func.now())
 
     @property

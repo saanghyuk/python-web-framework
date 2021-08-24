@@ -245,4 +245,59 @@
 
   pip3 install < requirements.txt 
 
+
+
+- #### 딱 여기까지만 하면, 계속 켜놓을 수가 없음. uwgi를 사용하는게 마무리 단계
+
+  ```
+  sudo yum -y install gcc python36u-devel
+  ```
+
   
+
+  ```
+  python3 -m pip install uwsgi
+  ```
+
+  **uwsgi라는 명령어가 생긴다.**
+
+  가상환경 내부로 들어간다. 정상적인 상황이면, 가상환경 bin 안에 uwsgi라는 명령어가 생긴다. 
+
+  ![1_10](./source/1_20.png)
+
+  ```
+  uwsgi --http :5000 --home ~/slack_env --module app --callable app
+  ```
+
+  지금 이 실행을, app이 있는 곳 안에서 하면 된다. 명령어는 어차피 먹어. bin에 있다는거는 명령어가 있다는 거야. 
+
+  이제 이거 데몬으로 배포만 하면 된다. 
+
+  ```
+  nohub uwsgi --http :5000 --home ~/slack_env --module app --callable app &
+  ```
+
+  ```
+  ps -ef | grep '' # 이런식으로 확인 가능
+  ```
+
+  nohub 안써도 &만 쓰면 백그라운드 실행 되긴 하는데 nohub을 하면 꺼도 된다. 
+
+  ```
+  nohup uwsgi --http :5000 --home ~/slack_env --module app --callable app > output.txt &
+  ```
+
+  꺽쇠를 쓰면, 결과값을 해당 파일에 저장해 준다. 
+
+  그리고 nohup명령어 칠때 나오는 숫자가 이 프로그램 번호야 
+
+  ```
+  ps -ef | grep '숫자' # 이런식으로 확인 가능
+  ```
+
+
+
+- 더 나은 백그라운드 프로그램들도 있다. 
+
+  **supervisor**
+
