@@ -1,5 +1,9 @@
 # Crawling
 
+[내 IP알아보기](###내 IP알아보기. )
+
+[Data Type](##Data Type)
+
 - #### Basic 
 
   웹 크롤러(web crawler)는 조직적, 자동화된 방법으로 월드 와이드 웹을 탐색하는 컴퓨터 프로그램이다.
@@ -112,3 +116,50 @@
       HMSE에 대해서 싹다 불허. 그리고, 나머지 User-agent는 /user_report/ 빼고 싹다 허용. 
 
       `crawl-delay`: bingbot은 한번 크롤링을 하면, 3600초 이내에는 다시 수집하지 마라. 
+
+
+
+
+
+- ### 내 IP알아보기. 
+
+  ```
+  # Find My IP
+  # http://api.ipify.org/
+  res = req.get("http://api.ipify.org/")
+  print(res.text)
+  
+  ```
+
+  res.text 했는데, html이 안오네. 
+
+  이유 2가지 가능
+
+  1. 예를 들어 요청하는 사람이, 닌텐도면 html을 못읽으니깐 그것에 맞게 주는 거야. 
+
+     실제로, 서버는 요청한 것에 따라서 다르게 준다. 브라우져는 http request를 보낼때, 정보가 여러가지가 있음. 그런데, 이렇게 요청할때는, 아무 정보도 없는 그냥 브라우져 인것. 
+
+  2. 실제로, 서버에서 저런 html자체를 브라우져에 보낸 적이 없는 것. 서버에서는, 49.245.49.178 그냥 이것만 보냈는데, 브라우져에서 그거만 보여주기 좀 그래서 채운거야. 그게 확인이 가능한게, 페이지 소스 보기해 보면. 아래 처럼만 나온다. 페이지 소스 보기가 실제 응답값과 유사하게 보여준다. 그렇다고 완전 100% 동일한 것은 아님. 
+
+     ![1_5](./materials/1_5.png)
+
+     
+
+- ## Data Type
+
+  - #### XML
+
+    이 문서에는 note라는 노드 1개 밖에 없음. note 노드 안에, to/from/heading/body가 있음.  **? metadata ?** 부분은 메타데이터
+
+    ```XML
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <note>
+      <to>Tove</to>
+      <from>Jani</from>
+      <heading>Reminder</heading>
+      <body>Don't forget me this weekend!</body>
+    </note>
+    ```
+
+    
+
