@@ -4,6 +4,8 @@
 
 [Data Type](##Data Type)
 
+[regex](##Regex)
+
 - #### Basic 
 
   웹 크롤러(web crawler)는 조직적, 자동화된 방법으로 월드 와이드 웹을 탐색하는 컴퓨터 프로그램이다.
@@ -162,4 +164,69 @@
     ```
 
     
+
+##Regex
+
+- ```python
+url = "https://finance.naver.com/marketindex/?tabSel=exchange#tab_section"
+  res = req.get(url)
+body = res.text
+  
+  r = re.compile(r"h_lst.*?blind\">(.*?)</span>.*?value\">(.*?)</", re.DOTALL)
+  captures = r.findall(body)
+  
+
+  ```
+
+- 
+
+- ![1_5](./materials/1_6.png)
+
+  ​	
+
+  - ```
+    # * -> * 바로 앞 글자가 0개 이상일 수 있다. 
+    # 그런데, \n 를 포함하지 않는다. \n가 나오면 끝나버린다. 
+    print(re.match(r'hi1*', s))
+    ```
+    
+    `r = re.compile(r"미국 USD.*value\">(.*)</", re.DOTALL)` 
+    
+    **엔터도 포함해서 준비하라는 것.** 
+    
+    그리고, 그냥 .*하면 끝까지 다 가져와 버린다. 가장 좁은 범위를 가져오라고 하고 싶으면, 
+    
+    ```
+    .*?
+    ```
+    
+    
+    
+  -  `+` -> 1개 이상 
+  
+  - ? -> 없을수도 있다.
+  
+    진짜 물음표쓰고 싶으면 \, 
+  
+    ```python
+    print(re.match(r'colou?r', s))
+    
+    print(re.match(r'how are you\?', s))
+    ```
+  
+  - [] -> 이 중 아무거나. 괄호 내부는 모두 가능성 있는 글자가되는 것.
+  
+    ```python
+    print(re.match(r'이 영화는 [ABCDE]등급 입니다\.', s))
+    ```
+  
+  - () -> 캡쳐
+  
+    ```python
+    s = "이 영화는 F등급 입니다."
+    print(re.findall(r'이 영화는 (.)등급 입니다\.', s))
+    print(re.findall(r'이 (.*)는 (.)등급 입니다\.', s))
+    ```
+  
+    **['F']**
 
