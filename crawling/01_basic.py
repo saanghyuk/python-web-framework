@@ -15,3 +15,8 @@ print(res.request.headers)
 print(res.elapsed)
 # bite value, using when scraping the image or video etc.
 print(res.raw)
+
+
+res = req.get(
+    "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EA%B0%90%EC%9E%90")
+print(res.text)

@@ -6,6 +6,10 @@
 
 [regex](##Regex)
 
+[BeautifulSoup](##BeautifulSoup)
+
+[고급한정자](#####고급 한정자)
+
 - #### Basic 
 
   웹 크롤러(web crawler)는 조직적, 자동화된 방법으로 월드 와이드 웹을 탐색하는 컴퓨터 프로그램이다.
@@ -178,7 +182,7 @@ body = res.text
 
   ```
 
-- 
+  
 
 - ![1_5](./materials/1_6.png)
 
@@ -230,3 +234,311 @@ body = res.text
   
     **['F']**
 
+
+
+
+
+## 쿼리스트링 query string
+
+- **웹 요청시에 보내는 추가 인자 값**
+
+  `https://finance.naver.com/marketindex/exchangeDetail.nhn?marketindexCd=FX_USDKRW`
+
+  `?` 뒤가 쿼리 스트링
+
+  *url?querystring1&querystring2*
+
+  **key=value**
+
+  **?adults=2&children=3**
+
+  ```
+  - arr[] = 1
+    arr[] = 2
+    arr[] = 3
+    arr[1, 2, 3]
+  ```
+
+- 만약 값으로 ***?***나 ***&***이 쓰인다면? 또한 한글은 querystring으로 넘어갈 수가 없다. 
+
+  urlencode로 보내주게 된다. request는 url encode를 알아서 해준다. 
+
+  ![1_5](./materials/1_7.png)
+
+  ```python
+  res = req.get(
+      "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EA%B0%90%EC%9E%90")
+  print(res.text)
+  ```
+
+  알아서 보내주고 받는다. 
+
+  **requests말고 다른 라이브러리 쓰면, 우리가 urlencode를 해줘야 한다.**
+
+
+
+
+
+
+
+
+
+##BeautifulSoup 
+
+- **requests : http통신을 편하게** 
+
+  **beautifulsoup : html통신을 편하게**. html을 알아서 가져오고 인식해준다. 
+
+  *bs4는 http 통신을 해주는 애가 아니다. requests로 http 통신을 해서 가져온 html을 사용하기 편하게 해주는 친구이다.* 
+
+- 특징
+
+  - parents, children, contents, descendants, sibling : html구조의 파싱을 편하게 해준다. tree구조. 
+  - String, strings, stripped_strings, get_text() : 태그 내부를 알아서 편하게 가져와줌. 
+  - prettify : *tab, enter*
+  - html attribute : 
+
+- 네이버 금융 파싱하는데, iframe이 들어있다. 다른 html문서를 감쪽같이 가져온다. 
+
+  ![1_5](./materials/1_8.png)
+
+  - 그럼 소스를 바꿔야 한다. iframe으로
+
+  ```python
+  
+  for td in tds:
+      if len(td.find_all("a")) == 0:
+          continue
+      print(td.get_text(strip=True))
+      print(td.string)
+      for s in td.strings:
+        
+          print(s)
+      for s in td.stripped_strings:
+          print(s)
+  
+  ```
+
+  - `strings`, `stripped_strings`
+
+    `<div> 총 가격은 <b>19,000</b>원 입니다.`
+
+    b내부를 잘라내고 싶을 수 있잖아. 그런 경우에 쓰는게, **strings**, **stripeed_strings**
+
+    ```python
+    from bs4 import BeautifulSoup as bs
+    import requests as req
+    
+    url = "https://finance.naver.com//marketindex/exchangeList.nhn"
+    res = req.get(url)
+    
+    soup = bs(res.text, "html.parser")
+    # print(soup.title)
+    # print(soup.title.string)
+    
+    tds = soup.find_all("td")
+    
+    
+    names = []
+    for td in tds:
+        if len(td.find_all("a")) == 0:
+            continue
+        # print(td.get_text(strip=True))
+        names.append(td.get_text(strip=True))
+    
+    prices = []
+    for td in tds:
+        if "class" in td.attrs:
+            if "sale" in td.attrs["class"]:
+                prices.append(td.get_text(strip=True))
+    
+    print(names)
+    print(prices)
+    
+    ```
+
+    
+
+
+
+- #### CSS Selector
+
+  - ##### CSS
+
+    - 크롬 개발자 도구. 
+
+      - `document.querySelector("div#container")` : 처음 만나는 놈만 리턴
+      -  `document.querySelectorAll("div#container")` : 모두 리턴
+
+    - html attribute로 select
+
+      [all atributes references](https://www.w3schools.com/tags/ref_attributes.asp)
+
+      attribute = html의 속성. 
+
+      `<img height="90" width="130">` 이런 height/width 이런 것들도 모두 활용이 가능하다. 
+
+    - *=: 포함
+
+      ^=: ~으로 시작
+
+      $=: ~으로 끝남
+
+      ![1_5](./materials/1_9.png)
+
+    - #####고급 한정자
+
+      ![1_5](./materials/1_10.png)
+
+      ```python
+      select("*")
+      
+      select("div, p") : p와 div를 둘다 가져온다. 서로 다른 별개의 셀렉터를 만든 것이라고 보면 된다. 하나의 배열로 같이 온다. 
+      
+      select("div > p") : div의 바로 자식 p. 바로 자식만 된다. 손자가 안돼. 
+        
+      select("div p") : 이건 자식이든 자식의 자식이든, div 안에 있는 게 다된다. 
+        
+      select("div ~ p") : 바로 형제. 동급에서 바로 앞을 의미. 
+      
+      select("div + p") : 이것도 바로 형제 의미. 동급에서 바로 뒤
+      ```
+      
+      `document.querySelectAll("td.sale + td + td")` 이렇게 계속 가능 하다. 
+      
+    - 진짜 우아하게. **가장 중요하다 이게**
+
+      ![1_5](./materials/1_11.png)
+
+        - `:enabled` : html이 비활성화되면 회색으로 보이거나, input인데 못치는 상태거나 그런 상태들을 의미한다. 
+
+          `document.querySelector("input:disabled")`
+
+        - `:checked` : input type="checkbox" 같은 것에서 체크된 상태 의미한다. 
+
+        - `:disabled`
+
+        - `:empty` : string같은거로 값 가져오는데, 값이 비어있는지를 의미.
+
+          `<p></p>` 이렇게 빈거 가져오라는 것. 빈 테그를 가져오라는 것. Input 같은거는 대부분 값이 없지. 
+
+      - `:first-child` / `:last-child` : 자식 중에 첫번째 혹은 마지막 자식. 
+
+      - `first-of-type`/`last-of-type` : 나오는 해당 테그나 뭐 그런것 중에서 제일 첫번째나 마지막을 의미. 
+
+        부모 기준에서 내가 처음이면 다 나온다. 
+
+      - `:hover` : 마우스 올라가있으면, hover상태
+
+      - `:not`: 위 모든 것에 융합될 수 있다. 
+
+        <pre>
+        div.sale:checked
+        위는 체크가 된것을 찾는 것인데
+        여기서 체크가 안된것을 보고 싶다면?
+
+        div.sale:not(:checked)
+
+        **:not(:selector)** 이 형식을 기억하자 자주쓴다.  
+
+        **div:not(:first-child)** : 이런식으로 한다. 첫번째 자식 빼고. 
+
+      - `:nth-child` : n번째 자식, 버튼 5개 있으면, 그 중에 3번째 가져오고 싶을 때. 
+
+        `div:nth-child(3)` (css는 인덱싱이 또 1번부터 시작한다)
+
+        **지금 여기서 중요한게, div:nth-child같은애들 다 보면, div중에서 3번째를 찾는 것. 이게 div 자식 중에서 3번째가 아니야**
+
+      - `:nth-of-type` : 
+
+        `div:nth-of-type(3)` : 3번째 div를 가져온다. 
+
+      - ```python
+        
+        # enabled
+        arr = soup.select("input:enabled")
+        
+        # checked
+        arr = soup.select("input:checked")
+        
+        # disabled
+        arr = soup.select("input:disabled")
+        
+        # empty
+        # label 옆, input:empty
+        arr = soup.select("label+input:empty")
+        
+        # first_child
+        arr = soup.select("b:first-child")
+        
+        # last_child
+        arr = soup.select("table tbody tr:last-child")
+        
+        # first-of-type
+        # 자신이 부모의 첫번째 인 놈들이 다 나온다.
+        arr = soup.select("table tbody td:first-of-type")
+        
+        # last-of-type
+        # 자신이 부모의 첫번째 인 놈들이 다 나온다.
+        arr = soup.select("table tbody td:last-of-type")
+        
+        # not
+        arr = soup.select("b:not(:first-of-type)")
+        
+        # nth-child
+        arr = soup.select("table tobody tr:nth-child(2)")
+        
+        # nth-of-type
+        arr = soup.select("table tobody tr:nth-of-type(2)")
+        
+        ```
+
+        
+
+    - **:first-child 와 :first-of-type 의 차이점**
+
+      HTML
+
+      ```html
+      <div>
+          <div>text1</div>
+          <p>text2</p>
+          <p>text3</p>
+      </div>
+      ```
+
+      위와 같은 마크업이 있다고 가정하고 text2의 글자 색상을 빨간색으로 지정하려고 합니다.
+
+      CSS
+
+      ```css
+      /* Case1 */ 
+      div p:first-child { color: #ff0000; }
+      
+      /* Case2 */ 
+      div p:first-of-type { color: #ff0000; }
+      ```
+
+      위와 같이 CSS를 정의한다고 했을 경우에 결과물은 매우 다르게 나타납니다.
+
+      Case1 의 경우는 text2 글자 색상에 변화가 없고, Case2 인 경우에만 원하는 결과물을 얻을 수 있습니다.
+
+      그 이유는 `:first-child` 의 경우 **div 하위 엘리멘트중에 p 엘리먼트가 가장 첫번째에 위치해야  :first-child 가상클래스를 통해 선택**할 수 있기 때문입니다.
+
+      위 마크업은 div 하위 요소중에 가장 첫번째는 div 엘리먼트이기 때문에 선택할 수 없었던 것입니다. 
+
+      
+
+      반면에, `:firt-of-type` 은 실제 p 엘리먼트만을 기준으로 카운트를 하기 때문에 선택할 수 있는 것입니다.
+
+      다시 말해 가상클래스 명칭에서도 알 수 있듯이 **타입만을 체크**하는 것입니다.(예제는 p타입 중에 첫번째를 선택한다는 의미)
+
+      
+
+      이 점이 두 가상클래스 선택자의 중요한 차이점입니다.
+
+      
+
+- XPATH
+
+  
