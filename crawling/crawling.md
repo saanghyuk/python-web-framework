@@ -10,6 +10,8 @@
 
 [고급한정자](#####고급 한정자)
 
+[POST](# POST)
+
 - #### Basic 
 
   웹 크롤러(web crawler)는 조직적, 자동화된 방법으로 월드 와이드 웹을 탐색하는 컴퓨터 프로그램이다.
@@ -542,3 +544,45 @@ body = res.text
 - XPATH
 
   
+
+
+
+
+
+
+# POST
+
+- #### Send Test request to [webhook.site](webhook.site). 
+
+  ```python
+  # webhook.site
+  import requests as req
+  
+  
+  res = req.get(
+      "https://webhook.site/abcc1b45-1ef5-494d-a032-9b7590452971?name=hi", headers={
+          "User-Agent": "sanghyuk/B1"
+      })
+  print(res.text)
+  
+  ```
+
+  ```python
+  # webhook.site
+  import requests as req
+  
+  url = "https://webhook.site/abcc1b45-1ef5-494d-a032-9b7590452971"
+  res = req.post(url, data={"type": "SS"}
+                 )
+  print(res)
+  
+  ```
+
+  
+
+- #### 이미지를 HTTP로 보내는 방법?
+
+  - 이미지란 실제로 문자열이다. 
+
+    
+
