@@ -14,6 +14,8 @@
 
 [Error Case](#ERROR CASE)
 
+[동적크롤링](#동적 크롤링)
+
 - #### Basic 
 
   웹 크롤러(web crawler)는 조직적, 자동화된 방법으로 월드 와이드 웹을 탐색하는 컴퓨터 프로그램이다.
@@ -686,3 +688,101 @@ body = res.text
    - Captcha
 
    - Client-Side Javascript Dependecy
+
+
+
+# 동적 크롤링
+
+- 브라우져 
+
+  - 랜더링 : html문서를 화면에 그려주는 것. 
+
+  - 브라우져의 역할 예시 
+
+      1. 네이버 접속 (HTTP 통신, 렌더링)
+      2. 블로그 버튼 클릭 (인터렉션, HTTP 통신) 
+      3. 블로그 페이지 접속 (HTTP 통신, 렌더링) 
+      4. 블로그 검색 (인터렉션, HTTP 통신)
+      5. 블로그 글 검색 (HTTP 통신, 렌더링)
+      1. 블로그 글쓰기 클릭
+      2. 글 입력(제목, 본문, 태그, 사진 등) 3. 작성완료 버튼
+  
+- #### Seleium
+
+  - 브라우저 테스팅 툴, 브라우저 원격 조종 툴. 
+  - 셀레니움은 디버깅 모드의 브라우저와 TCP통신. 리모콘. 
+
+  - 동적 웹사이트의 특징 
+
+    - 사이트가 깜빡이지 않는다.
+
+    - 화면이 한번에 다 로딩되지 않는다. (DOM 생성)
+
+    - javascript 가 필수이다. 정적 웹사이트는 다 준비된 html/css를 로딩. 동적 웹사이트는 js를 통해서 서버랑 통신하면서 html을 만들어간다. 동적으로 html/css를 생성해간다. 
+
+      
+
+  - 설치 
+
+    - 셀리니움 필요한 것.
+
+      - *chrome*
+
+      - *chrome driver* : 셀레늄은 크롬 뿐만 아니라, safari/firefox/opera 등도 조절이 가능하다. chrome만을 위해 만들어 진 것이 아니다. 셀레늄과 해당 브라우져가 통신하기 위해서 해당 브라우져의 드라이버가 필요하다. 
+
+        버전도 다양하다. 내가 쓰는 크롬의 버전과 일치시켜야 한다. 
+
+        [chrome driver 93](https://chromedriver.storage.googleapis.com/index.html?path=93.0.4577.15/)
+
+      - *selenium python library*
+
+      - 테스트 코드 
+
+        
+
+    - 도커
+
+      - 도커란 ? 가상의 컴퓨터를 실험실처럼 만들어 사용하는 것
+
+        [docker](https://www.docker.com/get-started)
+
+      - [docker hub](https://hub.docker.com/)에 들어가서 selenium을 검색한다. 
+
+        `selenium/standalone-chrome` 이 이미지 이름을 복사. 
+
+      - terminal에서 4444:4444는 셀레늄이 쓰는 포트
+
+        `docker run -p 4444:4444 selenium/standalone-chrome`
+
+      - 실행 후 테스트
+
+        ```python
+        # docker
+        from selenium import webdriver
+        from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+        browser = webdriver.Remote(
+            "http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+        browser.get("http://naver.com")
+        print(browser.title)
+        browser.close()
+        ```
+
+    - 로컬
+
+      - pip3 install selenium
+
+      - test code
+
+        ```python
+        
+        from selenium import webdriver
+        import time
+        browser = webdriver.Chrome("../../chromedriver")
+        browser.get("http://naver.com")
+        time.sleep(10)
+        browser.close()
+        
+        ```
+
+        
+
